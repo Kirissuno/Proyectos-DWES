@@ -4,4 +4,7 @@
   <artifactId>Nominas</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Nominas</name>
+  
+  <repositories></repositories>
+  
 </project>
