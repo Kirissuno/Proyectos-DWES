@@ -25,8 +25,12 @@ public class Empleado extends Persona {
 		}
 	}
 	
-	public void setCategoria(int categoria) {
-		this.categoria = categoria;
+	public void setCategoria(int categoria) throws DatosNoCorrectosException {
+		if(categoria >0 && categoria < 11) {
+			this.categoria = categoria;
+		}else {
+			throw new DatosNoCorrectosException("Categoria incorrecta, debe estar entre 1 y 10 incluidos");
+		}
 	}
 	
 	public int getCategoria() {
