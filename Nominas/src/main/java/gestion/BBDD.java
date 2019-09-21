@@ -38,6 +38,10 @@ public class BBDD {
 	
 		}
 		
+		public void cargarficherobackup() {
+			
+		}
+		
 		public int salarioempleado(String dni) throws SQLException {
 			stmt = con.createStatement();
 			String consulta = "select sueldo from Nominas where dni = '"+dni+"'";

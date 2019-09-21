@@ -1,7 +1,10 @@
 package gestion;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +21,29 @@ public class Ficheros {
 		bbdd = new BBDD();
 	}
 	
-	private List<String> leerficheroempleados() throws FileNotFoundException {
+	protected List<String> leerficheroempleados() throws FileNotFoundException {
 		File empleados = new File("empleados.txt");
 		List<String> listaempleados = new ArrayList<String>();
 		
-
         Scanner sc=new Scanner(empleados);
         while(sc.hasNextLine()){
             listaempleados.add(sc.nextLine());
         }
         
+        sc.close();
+        
         return listaempleados;
 
+	}
+	
+	public void backupbbddafichero() throws ClassNotFoundException, SQLException, IOException {
+		File backup = new File("backup.txt");
+		BufferedWriter wr = new BufferedWriter(new FileWriter(backup));
+		
+		for(String empleado : bbdd.todoslosempleados()) {
+			wr.write(empleado+"\n");
+		}
+		wr.close();
 	}
 	
 	public void altaempleados() throws FileNotFoundException, DatosNoCorrectosException, SQLException {

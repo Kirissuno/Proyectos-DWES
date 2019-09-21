@@ -1,7 +1,6 @@
 package laboral;
 
-import java.awt.peer.MenuPeer;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -10,7 +9,7 @@ import gestion.Ficheros;
 
 public class CalculaNominas {
 
-	public static void main(String[] args) throws SQLException, ClassNotFoundException, FileNotFoundException, DatosNoCorrectosException {
+	public static void main(String[] args) throws SQLException, ClassNotFoundException, DatosNoCorrectosException, IOException {
 		
 		BBDD bbdd = new BBDD();;
 		Ficheros ficheros = new Ficheros();
@@ -31,8 +30,6 @@ public class CalculaNominas {
 					+ "7. Alta de nuevos empleados \n"
 					+ "Introduce cualquier otra tecla para salir.");
 			String menuprincipal = letras.nextLine();
-		
-		
 		
 			switch (menuprincipal) {
 			case "1": 
@@ -102,6 +99,7 @@ public class CalculaNominas {
 				
 			default:
 				System.out.println("Hasta otra :)");
+				ficheros.backupbbddafichero();
 				bbdd.cerrarconexion();
 				salir=true;
 				break;
