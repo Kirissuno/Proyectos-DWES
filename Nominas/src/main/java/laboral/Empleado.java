@@ -20,8 +20,6 @@ public class Empleado extends Persona {
 		}
 		if(anyos > 0) {
 			this.anyos = anyos;
-		}else {
-			throw new DatosNoCorrectosException("Los anyos deben ser positivos");
 		}
 	}
 	
