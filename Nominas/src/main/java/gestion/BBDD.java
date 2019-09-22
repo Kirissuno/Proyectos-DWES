@@ -10,6 +10,7 @@ import java.util.List;
 
 import laboral.DatosNoCorrectosException;
 import laboral.Empleado;
+import laboral.Nomina;
 
 public class BBDD {
 		
@@ -42,6 +43,27 @@ public class BBDD {
 			
 		}
 		
+		public boolean siexisteempleado(String dni) throws SQLException {
+			boolean existe = false;
+			
+			stmt = con.createStatement();
+			String consulta = "select count(dni) from Empleados where dni = '"+dni+"'";
+			rs = stmt.executeQuery(consulta);
+			
+			while(rs.next()) {
+				if(rs.getInt(1) > 0) {
+					existe = true;
+				}
+			}
+			return existe;
+		}
+		
+		public void reemplazaempleado(Empleado emp) throws SQLException {
+			stmt = con.createStatement();
+			String consulta = "update Empleados set nombre = '"+emp.nombre+"', sexo = '"+emp.sexo+"', categoria = '"+emp.getCategoria()+"', anyos = '"+emp.anyos+"' where dni = '"+emp.dni+"';";
+			stmt.executeUpdate(consulta);			
+		}
+		
 		public int salarioempleado(String dni) throws SQLException {
 			stmt = con.createStatement();
 			String consulta = "select sueldo from Nominas where dni = '"+dni+"'";
@@ -57,7 +79,7 @@ public class BBDD {
 			
 		}
 		
-		private List<String> todoslossalariosydni() throws SQLException{
+		public List<String> todoslossalariosydni() throws SQLException{
 			List<String> lista = new ArrayList<String>();
 			stmt = con.createStatement();
 			String consulta = "select dni, sueldo from Nominas";
@@ -66,12 +88,10 @@ public class BBDD {
 			while(rs.next()) {
 				lista.add(rs.getString("dni")+","+rs.getInt("sueldo"));
 			}
-			
-			con.close();
 			return lista;
 		}
 		
-		private Empleado emplexistente(String dni) throws SQLException, DatosNoCorrectosException {
+		public Empleado sacaempleado(String dni) throws SQLException, DatosNoCorrectosException {
 			Empleado empleado = null;
 			String consulta = "select * from Empleados where dni like '"+dni+"'";
 			stmt = con.createStatement();
@@ -92,14 +112,39 @@ public class BBDD {
 		public void altaempleado(Empleado emp) throws SQLException, DatosNoCorrectosException {
 			stmt = con.createStatement();
 			String consulta = "Insert into Empleados values ('"+emp.nombre+"','"+emp.dni+"','"+emp.sexo+"',"+emp.getCategoria()+","+emp.anyos+")";
+			String consulta2 = "insert into Nominas values ('"+emp.dni+"', "+Nomina.sueldo(emp)+")";
 			
-			if(emplexistente(emp.dni) == null) {
+			if(!siexisteempleado(emp.dni)) {
 				stmt.executeUpdate(consulta);
-			}else {
-				throw new DatosNoCorrectosException("Empleado con ese DNI ya existente");
+				stmt.executeUpdate(consulta2);
 			}
 			
 		}
+		
+		public void recalculasueldo(Empleado emp) throws SQLException, DatosNoCorrectosException {
+			stmt = con.createStatement();
+			String consulta = "update Nominas set sueldo = "+Nomina.sueldo(emp)+" where dni = '"+emp.dni+"'";
+			
+			stmt.executeUpdate(consulta);
+			
+		}
+		
+		public void bajaempleado(String dni) throws SQLException, DatosNoCorrectosException {
+			stmt = con.createStatement();
+			
+			String consulta = "delete from nominas where dni = '"+dni+"'";
+			String consulta2 = "delete from empleados where dni = '"+dni+"'";
+			
+			if(siexisteempleado(dni)) {
+				stmt.executeUpdate(consulta);
+				stmt.executeUpdate(consulta2);
+			}else {
+				throw new DatosNoCorrectosException("Empleado inexistente");
+			}
+			
+			
+		}
+		
 		
 		public void cerrarconexion() throws SQLException {
 			con.close();

@@ -1,5 +1,6 @@
 package laboral;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -28,6 +29,9 @@ public class CalculaNominas {
 					+ "5. Recalcular y actualizar sueldos de todos los empleados \n"
 					+ "6. Realizar copia de seguridad de la BBDD en fichero \n"
 					+ "7. Alta de nuevos empleados \n"
+					+ "8. Dar de baja empleado \n"
+					+ "9. Cargar backup.txt a la base de datos \n"
+					+ "0. Guardar todos los salarios junto al empleado \n"
 					+ "Introduce cualquier otra tecla para salir.");
 			String menuprincipal = letras.nextLine();
 		
@@ -48,7 +52,119 @@ public class CalculaNominas {
 					System.out.println("El empleado con ese DNI no existe");
 				}
 				break;
-			
+				
+			case "3":
+				System.out.println("Introduce el DNI del empleado a editar");
+				String dniaeditar = letras.nextLine().toUpperCase();
+				
+				if(bbdd.siexisteempleado(dniaeditar)) {
+					System.out.println("Que campos deseas editar? \n"
+							+ "1. Nombre \n"
+							+ "2. Sexo \n"
+							+ "3. Categoria \n"
+							+ "4. Anyos \n"
+							+ "5. Todos los campos \n"
+							+ "Introduce cualquier otra tecla para salir.");
+					String opcionaeditar = letras.nextLine();
+					
+					Empleado aeditar = bbdd.sacaempleado(dniaeditar);
+					
+					switch (opcionaeditar) {
+					case "1":
+						System.out.println("Introduce el nuevo nombre");
+						String nombreaeditar1 = letras.nextLine();
+						bbdd.reemplazaempleado(new Empleado(nombreaeditar1, aeditar.dni, aeditar.sexo));
+						System.out.println("Consulta enviada");
+						break;
+					case "2":
+						System.out.println("Introduce el nuevo sexo F/M");
+						String sexoaeditar1 = letras.nextLine();
+						try {
+							bbdd.reemplazaempleado(new Empleado(aeditar.nombre, aeditar.dni, sexoaeditar1.trim().toUpperCase().charAt(0)));
+							System.out.println("Consulta enviada");
+						} catch (DatosNoCorrectosException e) {
+							System.out.println(e);
+						}
+						
+						break;
+					case "3":
+						System.out.println("Introduce la nueva categoria");
+						int categoriaeditar1 = numeros.nextInt();
+						try {
+							bbdd.reemplazaempleado(new Empleado(aeditar.nombre, aeditar.dni, aeditar.sexo, categoriaeditar1, aeditar.anyos));
+							System.out.println("Consulta enviada");
+						} catch (DatosNoCorrectosException e) {
+							System.out.println(e);
+						}
+						break;
+					case "4":
+						System.out.println("Introduce el nuevo anyo");
+						int anyosaeditar1 = numeros.nextInt();
+						try {
+							bbdd.reemplazaempleado(new Empleado(aeditar.nombre, aeditar.dni, aeditar.sexo, aeditar.getCategoria(), anyosaeditar1));
+							System.out.println("Consulta enviada");
+						} catch (DatosNoCorrectosException e) {
+							System.out.println(e);
+						}
+						break;
+					case "5":
+						System.out.println("Introduce el nuevo nombre");
+						String nombreaeditar = letras.nextLine();
+						System.out.println("Introduce el nuevo sexo F/M");
+						String sexoaeditar = letras.nextLine();
+						System.out.println("Introduce la nueva categoria");
+						int categoriaeditar = numeros.nextInt();
+						System.out.println("Introduce el nuevo anyo");
+						int anyosaeditar = numeros.nextInt();
+
+						try {
+							bbdd.reemplazaempleado(new Empleado(nombreaeditar, aeditar.dni, sexoaeditar.trim().toUpperCase().charAt(0), categoriaeditar, anyosaeditar));
+							System.out.println("Consulta enviada");
+						} catch (DatosNoCorrectosException e) {
+							System.out.println(e);
+						}
+						
+						break;
+					default:
+						System.out.println("OK");
+						break;
+					}
+					
+				}
+				
+				break;
+				
+			case "4":
+				
+				System.out.println("Introduce el DNI del empleado a recalcular el sueldo");
+				String dnirecalcular = letras.nextLine();
+				
+				if(bbdd.siexisteempleado(dnirecalcular)) {
+					bbdd.recalculasueldo(bbdd.sacaempleado(dnirecalcular));
+					System.out.println("Consulta enviada");
+				}else {
+					System.out.println("Empleado inexistente");
+				}
+								
+				break;
+				
+			case "5":
+				
+				for(String linea : bbdd.todoslosempleados()) {
+					String dni = linea.split(",")[1];
+					bbdd.recalculasueldo(bbdd.sacaempleado(dni));
+				}
+				System.out.println("Consulta enviada");
+				
+				break;
+				
+			case "6":
+				
+				ficheros.backupbbddafichero();
+				System.out.println("Hecho :)");
+				
+				break;
+				
 			case "7":
 				System.out.println("Alta manual o mediante fichero empleadosNuevos.txt? \n"
 						+ "1. Manual \n"
@@ -97,9 +213,36 @@ public class CalculaNominas {
 				
 				break;
 				
+			case "8":
+				
+				System.out.println("Introduce el DNI del empleado a dar de baja");
+				String aborrar = letras.nextLine();
+				
+				try {
+					bbdd.bajaempleado(aborrar);
+					System.out.println("Consulta enviada");
+				} catch (DatosNoCorrectosException e) {
+					System.out.println(e);
+				}
+				
+				break;
+				
+			case "9":
+				
+				ficheros.altaempleados(new File("backup.txt"));
+				System.out.println("Hecho :)");
+				
+				break;
+				
+			case "0":
+				
+				ficheros.backupbbddafichero(new File("salarios.dat"));
+				System.out.println("Hecho :)");
+				
+				break;
+				
 			default:
 				System.out.println("Hasta otra :)");
-				ficheros.backupbbddafichero();
 				bbdd.cerrarconexion();
 				salir=true;
 				break;

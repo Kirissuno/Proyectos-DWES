@@ -1,3 +1,3 @@
-23,X22,M,1,0
-21,X33,M,1,0
-Juanma,X933,F,3,3
+Juanma,X33,M,1,0
+Juanma,X933,F,3,4
+Juanma,X9337,F,4,3
