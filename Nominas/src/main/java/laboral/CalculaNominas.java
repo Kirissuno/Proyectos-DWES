@@ -12,7 +12,7 @@ public class CalculaNominas {
 
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, DatosNoCorrectosException, IOException {
 		
-		BBDD bbdd = new BBDD();;
+		BBDD bbdd = new BBDD();
 		Ficheros ficheros = new Ficheros();
 		
 		boolean salir = false;		
