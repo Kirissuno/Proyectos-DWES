@@ -17,5 +17,8 @@
 		<br>
 	<% } %>
 	
+	<a href="index.html">
+		<button>Volver al index</button>
+	</a>
 </body>
 </html>
