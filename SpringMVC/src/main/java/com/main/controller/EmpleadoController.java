@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.main.model.Empleado;
 import com.main.service.EmpleadoService;
@@ -23,8 +24,9 @@ public class EmpleadoController {
 	private EmpleadoService empleadoService;
 	
 	@GetMapping("/empleados")
-	public ResponseEntity<List<Empleado>> getAll(){
-		return ResponseEntity.ok().body(empleadoService.getAll());
+	public ModelAndView getAll() {
+		List<Empleado> lista = empleadoService.getAll();
+		return new ModelAndView("empleados", "lista", lista);
 	}
 	
 	@GetMapping("/empleados/{dni}")
