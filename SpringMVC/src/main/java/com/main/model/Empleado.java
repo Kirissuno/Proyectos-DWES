@@ -28,7 +28,6 @@ public class Empleado {
 	
 	public Empleado() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Empleado(String dni) {
 		super();
