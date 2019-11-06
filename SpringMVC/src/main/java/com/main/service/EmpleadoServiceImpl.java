@@ -73,8 +73,6 @@ public class EmpleadoServiceImpl implements EmpleadoService{
 		Optional<Empleado> empleadoBD = this.empRepo.findById(dni);
 		if(empleadoBD.isPresent()) {
 			empRepo.delete(empleadoBD.get());
-		}else {
-			throw new ResourceNotFoundException("Empleado con DNI : "+dni +" inexistente");
 		}
 	}
 

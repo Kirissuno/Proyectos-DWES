@@ -66,7 +66,7 @@ public class EmpleadoController {
 	public ModelAndView borrarEmp(@RequestParam String dni){
 		empleadoService.deleteEmpleado(dni);
 		nomService.deleteNomina(dni);
-		return new ModelAndView("/");
+		return new ModelAndView("index");
 	}
 	
 	@GetMapping("/alta")

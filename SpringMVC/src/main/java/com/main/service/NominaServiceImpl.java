@@ -53,8 +53,6 @@ public class NominaServiceImpl implements NominaSevice {
 		Optional<Nomina> nominaBD = this.nomRepo.findById(dni);
 		if(nominaBD.isPresent()) {
 			nomRepo.delete(nominaBD.get());
-		}else {
-			throw new ResourceNotFoundException("Empleado con DNI : "+dni +" inexistente");
 		}
 	}
 	
