@@ -15,12 +15,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.main.model.Empleado;
 import com.main.service.EmpleadoService;
+import com.main.service.NominaSevice;
 
 @RestController
 public class EmpleadoController {
 
 	@Autowired
 	private EmpleadoService empleadoService;
+	@Autowired
+	private NominaSevice nomService;
 	
 	@GetMapping("/")
 	public ModelAndView index() {
@@ -62,6 +65,7 @@ public class EmpleadoController {
 	@GetMapping("/empleados/borrar")
 	public ModelAndView borrarEmp(@RequestParam String dni){
 		empleadoService.deleteEmpleado(dni);
+		nomService.deleteNomina(dni);
 		return new ModelAndView("/");
 	}
 	

@@ -9,4 +9,5 @@ public interface NominaSevice {
 	List<Nomina> getAll();
 	Nomina getSpec(String dni);
 	Nomina updateSueldo(Empleado emp);
+	void deleteNomina(String dni);
 }

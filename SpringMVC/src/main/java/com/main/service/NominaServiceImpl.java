@@ -48,6 +48,16 @@ public class NominaServiceImpl implements NominaSevice {
 		}
 	}
 	
+	@Override
+	public void deleteNomina(String dni) {
+		Optional<Nomina> nominaBD = this.nomRepo.findById(dni);
+		if(nominaBD.isPresent()) {
+			nomRepo.delete(nominaBD.get());
+		}else {
+			throw new ResourceNotFoundException("Empleado con DNI : "+dni +" inexistente");
+		}
+	}
+	
 	private static final int SUELDO_BASE[] = 
 		{50000, 70000, 90000, 110000, 130000, 150000, 170000, 190000, 210000, 230000};
 	
