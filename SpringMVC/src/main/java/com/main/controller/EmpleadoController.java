@@ -1,7 +1,5 @@
 package com.main.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,31 +22,51 @@ public class EmpleadoController {
 	@Autowired
 	private EmpleadoService empleadoService;
 	
-	@GetMapping("/empleados")
-	public ModelAndView getAll() {
-		List<Empleado> lista = empleadoService.getAll();
-		return new ModelAndView("empleados", "lista", lista);
+	@GetMapping("/")
+	public ModelAndView index() {
+		return new ModelAndView("index");
 	}
 	
-	@GetMapping("/empleados/{dni}")
-	public ResponseEntity<Empleado> getEspecifico(@PathVariable String dni){
-		return ResponseEntity.ok().body(empleadoService.getSpec(dni));
+	@GetMapping("/empleados")
+	public ModelAndView getAll() {
+		return new ModelAndView("empleados", "lista", empleadoService.getAll());
 	}
+	
+//	@GetMapping("/empleado")
+//	public ModelAndView getEspecifico(@RequestParam String dni){
+//		return new ModelAndView("empleado", "empleado", empleadoService.getSpec(dni));
+//	}
 	
 	@PostMapping("/empleados")
 	public ResponseEntity<Empleado> crearEmpl(@RequestBody Empleado emp){
 		return ResponseEntity.ok().body(empleadoService.createEmpleado(emp));
 	}
 	
-	@PutMapping("/empleados/{dni}")
-	public ResponseEntity<Empleado> actualizaEmp(@PathVariable String dni,@RequestBody Empleado emp){
-		emp.setDni(dni);
-		return ResponseEntity.ok().body(empleadoService.updateEmpelado(emp));
+	@GetMapping("/empleado")
+	public ModelAndView actualizaEmp(@RequestParam String dni){
+		return new ModelAndView("formmodificar", "empleado", empleadoService.getSpec(dni));
 	}
 	
-	@DeleteMapping("/empleados/{dni}")
-	public HttpStatus borrarEmp(@PathVariable String dni){
+	@GetMapping("/empleado/mod")
+	public ModelAndView actualizaEmp(@RequestParam String dni, @RequestParam String nombre, @RequestParam String sexo, @RequestParam Integer categoria, @RequestParam Integer anyos){
+		empleadoService.updateEmpleado(new Empleado(nombre, dni, sexo, categoria, anyos));
+		return new ModelAndView("index");
+	}
+	
+	@GetMapping("/empleado/alta")
+	public ModelAndView altaEmp(@RequestParam String nombre, @RequestParam String dni, @RequestParam String sexo, @RequestParam Integer categoria, @RequestParam Integer anyos){
+		empleadoService.updateEmpleado(new Empleado(nombre, dni, sexo, categoria, anyos));
+		return new ModelAndView("index");
+	}
+	
+	@GetMapping("/empleados/borrar")
+	public ModelAndView borrarEmp(@RequestParam String dni){
 		empleadoService.deleteEmpleado(dni);
-		return HttpStatus.OK;
+		return new ModelAndView("/");
+	}
+	
+	@GetMapping("/alta")
+	public ModelAndView actualizaEmp(){
+		return new ModelAndView("altaempleado");
 	}
 }

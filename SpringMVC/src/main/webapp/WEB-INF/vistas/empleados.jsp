@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Todos los empleados</title>
 </head>
 <body>
 	<table border="1px solid black">
@@ -16,6 +16,7 @@
 		<th>SEXO</th>
 		<th>CATEGORIA</th>
 		<th>ANYOS</th>
+		<th>Accion</th>
 	</tr>	
 	<c:forEach items="${lista}" var="empleado">
     	<tr>
@@ -24,8 +25,18 @@
 			<td>${empleado.sexo}</td>
 			<td>${empleado.categoria}</td>
 			<td>${empleado.anyos}</td>
+			<td>
+				<form action="/empleados/borrar">
+					<input type="hidden" value="${empleado.dni}" name="dni">
+					<input value="Borrar" class="boton" type="submit" />
+				</form>
+			</td>
        </tr>
 	</c:forEach> 
 	</table>
+	<hr>
+	<a href="/">
+		<button>Volver al index</button>
+	</a>
 </body>
 </html>

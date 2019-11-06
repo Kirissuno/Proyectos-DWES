@@ -2,20 +2,48 @@ package com.main.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name="empleados")
 public class Empleado {
 	
+	@NotNull
 	private String nombre;
 	@Id
+	@NotNull
 	private String dni;
+	@NotNull
 	private String sexo;
+	@NotNull
 	private Integer categoria;
+	@NotNull
 	private Integer anyos;
 	
+//	@OneToOne(mappedBy = "empleado")
+//	private Nomina nomina;
 	
+	public Empleado() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Empleado(String dni) {
+		super();
+		this.dni = dni;
+	}
+	
+	
+	public Empleado(String nombre, String dni, String sexo, Integer categoria, Integer anyos) {
+		super();
+		this.nombre = nombre;
+		this.dni = dni;
+		this.sexo = sexo;
+		this.categoria = categoria;
+		this.anyos = anyos;
+	}
 	public String getNombre() {
 		return nombre;
 	}

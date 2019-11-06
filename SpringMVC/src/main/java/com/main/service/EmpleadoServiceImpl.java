@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.main.exception.ResourceNotFoundException;
 import com.main.model.Empleado;
+import com.main.model.Nomina;
 import com.main.repository.EmpleadoRepository;
+import com.main.repository.NominaRepository;
 
 @Service
 @Transactional
@@ -17,23 +19,34 @@ public class EmpleadoServiceImpl implements EmpleadoService{
 
 	@Autowired
 	private EmpleadoRepository empRepo;
+	@Autowired
+	private NominaRepository nomRepo;
 	
 	@Override
 	public Empleado createEmpleado(Empleado emp) {
+		nomRepo.save(new Nomina(emp.getDni(), NominaServiceImpl.sueldo(emp)));
 		return empRepo.save(emp);
 	}
 
 	@Override
-	public Empleado updateEmpelado(Empleado emp) {
-		Optional<Empleado> empleadoBD = this.empRepo.findById(emp.getDni());
+	public Empleado updateEmpleado(Empleado emp) {
+		Optional<Empleado> empleadoBD = empRepo.findById(emp.getDni());
+		Optional<Nomina> nominaBD = nomRepo.findById(empleadoBD.get().getDni());
+
 		if(empleadoBD.isPresent()) {
 			Empleado empleadoUpdate = empleadoBD.get();
+			Nomina nom = nominaBD.get();
 			empleadoUpdate.setDni(emp.getDni());
 			empleadoUpdate.setNombre(emp.getNombre());
 			empleadoUpdate.setSexo(emp.getSexo());
-			empleadoUpdate.setCategoria(emp.getCategoria());
-			empleadoUpdate.setAnyos(emp.getAnyos());
+			if(empleadoBD.get().getCategoria() != emp.getCategoria() || empleadoBD.get().getAnyos() != emp.getCategoria()) {
+				empleadoUpdate.setCategoria(emp.getCategoria());
+				empleadoUpdate.setAnyos(emp.getAnyos());
+				nom.setDni(emp.getDni());
+				nom.setSueldo(NominaServiceImpl.sueldo(emp));
+			}
 			empRepo.save(empleadoUpdate);
+			nomRepo.save(nom);
 			return empleadoUpdate;
 		}else {
 			throw new ResourceNotFoundException("Empleado con DNI : "+emp.getDni() +" inexistente");
