@@ -41,11 +41,7 @@ public class NominaServiceImpl implements NominaSevice {
 	@Override
 	public Nomina getSpec(String dni) {
 		Optional<Nomina> nominaBD = this.nomRepo.findById(dni);
-		if(nominaBD.isPresent()) {
-			return nominaBD.get();
-		}else {
-			return null;
-		}
+		return nominaBD.orElseThrow();
 	}
 	
 	@Override

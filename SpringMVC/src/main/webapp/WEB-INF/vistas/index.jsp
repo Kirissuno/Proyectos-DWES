@@ -16,16 +16,16 @@
 	</form>
 	<br>
 	<form action="/nomina" method="get">
-		Ver salario del empleado <input type="text" id="dni" name="dni">
+		Ver salario del empleado <input type="text" id="dni" name="dni" required>
 		<input class="boton" type="submit" >
 	</form>
 	
 	<br>
 	<form action="/empleado" method="get">
-		Modificar el empleado con DNI: <input type="text" id="dni" name="dni">
+		Modificar el empleado con DNI: <input type="text" id="dni" name="dni" required>
 		<input class="boton" type="submit">
 	</form>
-	
+	<br>
 	<form action="/alta" method="get">
 		<input class="boton" type="submit" value="Dar de alta nuevo empleado">
 	</form>

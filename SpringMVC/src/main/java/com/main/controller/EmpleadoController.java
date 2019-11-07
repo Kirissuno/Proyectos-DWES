@@ -3,8 +3,11 @@ package com.main.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,11 +59,16 @@ public class EmpleadoController {
 		return new ModelAndView("index");
 	}
 	
-	@GetMapping("/empleado/alta")
-	public ModelAndView altaEmp(@RequestParam String nombre, @RequestParam String dni, @RequestParam String sexo, @RequestParam Integer categoria, @RequestParam Integer anyos){
-		empleadoService.updateEmpleado(new Empleado(nombre, dni, sexo, categoria, anyos));
-		return new ModelAndView("index");
-	}
+	@PostMapping("/empleado/alta")
+	public ModelAndView submit(@ModelAttribute("Empleado") Empleado empleado,BindingResult result, ModelMap model) {
+		model.addAttribute("nombre", empleado.getNombre());
+		model.addAttribute("sexo", empleado.getSexo());
+		model.addAttribute("dni", empleado.getDni());
+		model.addAttribute("categoria", empleado.getCategoria());
+		model.addAttribute("anyos", empleado.getAnyos());
+		empleadoService.createEmpleado(empleado);
+        return new ModelAndView("index");
+    }
 	
 	@GetMapping("/empleados/borrar")
 	public ModelAndView borrarEmp(@RequestParam String dni){
@@ -71,6 +79,11 @@ public class EmpleadoController {
 	
 	@GetMapping("/alta")
 	public ModelAndView actualizaEmp(){
-		return new ModelAndView("altaempleado");
+		return new ModelAndView("altaempleado", "empleado", new Empleado());
+	}
+	
+	@GetMapping("/error")
+	public ModelAndView error() {
+		return new ModelAndView("error");
 	}
 }

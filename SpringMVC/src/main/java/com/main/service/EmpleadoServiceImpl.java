@@ -61,11 +61,7 @@ public class EmpleadoServiceImpl implements EmpleadoService{
 	@Override
 	public Empleado getSpec(String dni) {
 		Optional<Empleado> empleadoBD = this.empRepo.findById(dni);
-		if(empleadoBD.isPresent()) {
-			return empleadoBD.get();
-		}else {
-			throw new ResourceNotFoundException("Empleado con DNI : "+dni +" inexistente");
-		}
+		return empleadoBD.orElseThrow();
 	}
 
 	@Override
@@ -73,7 +69,10 @@ public class EmpleadoServiceImpl implements EmpleadoService{
 		Optional<Empleado> empleadoBD = this.empRepo.findById(dni);
 		if(empleadoBD.isPresent()) {
 			empRepo.delete(empleadoBD.get());
+		}else {
+			throw new ResourceNotFoundException("Empleado con DNI : "+dni +" inexistente");
 		}
 	}
+
 
 }
