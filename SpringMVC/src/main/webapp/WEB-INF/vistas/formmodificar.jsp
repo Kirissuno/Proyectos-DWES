@@ -17,7 +17,7 @@
 		<div class="row justify-content-center">
 			<form:form action="/empleado/mod" method="POST" modelAttribute="empleado">
 				<form:label path="nombre">Nombre: </form:label> <form:input required="required" type="text" path="nombre" /><br>
-				<form:label path="dni">Dni: </form:label> <form:input readonly="readonly"  type="text" path="dni"/><br>
+				<form:label path="dni">DNI: </form:label> <form:input readonly="true"  type="text" path="dni"/><br>
 				<form:label path="sexo">Sexo: </form:label> <form:input required="required" type="text" path="sexo" placeholder="M o F" pattern="^[MF]{1}$"/><br>
 				<form:label path="categoria">Categoria: </form:label> <form:input required="required"  type="number" path="categoria" min="1" max="10"/><br>
 				<form:label path="anyos">Anyos: </form:label> <form:input required="required" type="number" path="anyos" min="0"/><br>
