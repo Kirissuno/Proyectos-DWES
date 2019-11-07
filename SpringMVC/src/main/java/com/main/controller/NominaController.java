@@ -17,12 +17,12 @@ public class NominaController {
 	
 	
 	@GetMapping("/nomina")
-	public ModelAndView getEspecifico(@RequestParam(required = true, defaultValue = "0") String dni){
+	public ModelAndView getEspecifico(@RequestParam String dni){
 		Nomina nom = nominaService.getSpec(dni);
 		if(nom.getSueldo() > 0) {
 			return new ModelAndView("empleado", "nomina", nom);
 		}else {
-			return null;
+			return new ModelAndView("error", "prueba", "prueba");
 		}
 	}
 

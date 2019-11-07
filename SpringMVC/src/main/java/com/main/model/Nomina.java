@@ -1,5 +1,6 @@
 package com.main.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,6 +13,7 @@ public class Nomina{
 	
 	@Id
 	@NotNull
+	@Column(length = 255)
 	private String dni;
 	@NotNull
 	private Integer sueldo;

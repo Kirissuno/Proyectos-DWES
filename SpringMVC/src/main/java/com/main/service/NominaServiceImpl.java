@@ -29,7 +29,7 @@ public class NominaServiceImpl implements NominaSevice {
 			nomRepo.save(nominaUpdate);
 			return nominaUpdate;
 		}else {
-			return null;
+			throw new ResourceNotFoundException("Nomina a actualizar inexistente");
 		}
 	}
 
@@ -40,8 +40,8 @@ public class NominaServiceImpl implements NominaSevice {
 
 	@Override
 	public Nomina getSpec(String dni) {
-		Optional<Nomina> nominaBD = this.nomRepo.findById(dni);
-		return nominaBD.orElseThrow();
+		Nomina nominaBD = this.nomRepo.findById(dni).orElseThrow(() -> new ResourceNotFoundException("Nomina para el empleado con DNI: "+dni+" no existe. (Puede no existir el empleado)"));
+		return nominaBD;
 	}
 	
 	@Override

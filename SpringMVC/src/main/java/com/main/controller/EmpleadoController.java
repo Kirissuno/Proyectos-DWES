@@ -1,17 +1,11 @@
 package com.main.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,24 +32,15 @@ public class EmpleadoController {
 		return new ModelAndView("empleados", "lista", empleadoService.getAll());
 	}
 	
-//	@GetMapping("/empleado")
-//	public ModelAndView getEspecifico(@RequestParam String dni){
-//		return new ModelAndView("empleado", "empleado", empleadoService.getSpec(dni));
-//	}
-	
-	@PostMapping("/empleados")
-	public ResponseEntity<Empleado> crearEmpl(@RequestBody Empleado emp){
-		return ResponseEntity.ok().body(empleadoService.createEmpleado(emp));
-	}
-	
 	@GetMapping("/empleado")
 	public ModelAndView actualizaEmp(@RequestParam String dni){
 		return new ModelAndView("formmodificar", "empleado", empleadoService.getSpec(dni));
 	}
 	
-	@GetMapping("/empleado/mod")
-	public ModelAndView actualizaEmp(@RequestParam String dni, @RequestParam String nombre, @RequestParam String sexo, @RequestParam Integer categoria, @RequestParam Integer anyos){
-		empleadoService.updateEmpleado(new Empleado(nombre, dni, sexo, categoria, anyos));
+	//
+	@PostMapping("/empleado/mod")
+	public ModelAndView actualizaEmp(@ModelAttribute("Empleado") Empleado empleado){
+		empleadoService.updateEmpleado(empleado);
 		return new ModelAndView("index");
 	}
 	
@@ -82,8 +67,5 @@ public class EmpleadoController {
 		return new ModelAndView("altaempleado", "empleado", new Empleado());
 	}
 	
-	@GetMapping("/error")
-	public ModelAndView error() {
-		return new ModelAndView("error");
-	}
+	
 }
