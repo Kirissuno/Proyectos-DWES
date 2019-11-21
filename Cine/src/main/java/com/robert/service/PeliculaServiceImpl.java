@@ -58,4 +58,9 @@ public class PeliculaServiceImpl implements PeliculaService {
 		}
 	}
 
+	@Override
+	public List<Pelicula> pelisDirector(String director) {
+		return prepo.findByDirector(director);
+	}
+
 }

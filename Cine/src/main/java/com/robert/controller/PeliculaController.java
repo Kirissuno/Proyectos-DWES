@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.robert.model.Pelicula;
@@ -26,6 +27,11 @@ public class PeliculaController {
 	@GetMapping("/filmografia")
 	public List<Pelicula> getAll(){
 		return pservice.getAll();
+	}
+	
+	@RequestMapping(value = "/filmografias/{nombre}", method = RequestMethod.GET)
+	public List<Pelicula> getPelisDirector(@PathVariable("nombre") String director){
+		return pservice.pelisDirector(director);
 	}
 	
 	@GetMapping("/filmografia/{titulo}")
@@ -47,4 +53,5 @@ public class PeliculaController {
 	public void updatePeli(@RequestBody Pelicula pelicula) {
 		pservice.updatePeli(pelicula);
 	}
+	
 }

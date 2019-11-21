@@ -1,5 +1,6 @@
 package com.robert.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -10,8 +11,12 @@ import com.sun.istack.NotNull;
 
 @Entity
 @Table(name="pelicula")
-public class Pelicula {
+public class Pelicula implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String director;
 	@Id
 	@NotNull
