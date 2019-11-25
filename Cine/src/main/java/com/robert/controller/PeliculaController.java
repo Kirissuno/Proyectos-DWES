@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.robert.model.Admin;
 import com.robert.model.Pelicula;
+import com.robert.service.AdminService;
 import com.robert.service.PeliculaService;
 
 @RestController
@@ -23,6 +25,8 @@ import com.robert.service.PeliculaService;
 public class PeliculaController {
 	@Autowired
 	PeliculaService pservice;
+	@Autowired
+	AdminService aservice;
 	
 	@GetMapping("/filmografia")
 	public List<Pelicula> getAll(){
@@ -52,6 +56,11 @@ public class PeliculaController {
 	@PatchMapping("/filmografia")
 	public void updatePeli(@RequestBody Pelicula pelicula) {
 		pservice.updatePeli(pelicula);
+	}
+	
+	@GetMapping("/filmografia/admin/{usuario}")
+	public Admin getAdmin(@PathVariable String usuario) {
+		return aservice.getAdmin(usuario);
 	}
 	
 }
